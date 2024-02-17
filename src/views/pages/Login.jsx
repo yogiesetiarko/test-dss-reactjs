@@ -1,4 +1,7 @@
 import React from 'react';
+const electron = window.require('electron');
+const remote = electron.remote
+const {dialog} = remote
 // import { useDispatch } from 'react-redux';
 // import { login } from '../actions/authActions';
 // import { useNavigate } from 'react-router-dom';
@@ -15,6 +18,7 @@ const Login = () => {
     // dispatch(login());
     console.log("Login Press")
     event.preventDefault();
+    dialog.showErrorBox('Error Box','Fatal Error')
     // ipcRenderer.send('login', { username: 'usernameMu', password: 'passwordMu' });
     // fetch('https://dummyjson.com/auth/login', {
     //   method: 'POST',
