@@ -1,7 +1,7 @@
 {
   "name": "test-dss-reactjs",
   "private": true,
-  "homepage": "./",
+  "homepage": ".",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
