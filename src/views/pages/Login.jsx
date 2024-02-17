@@ -2,7 +2,8 @@ import React from 'react';
 // import { useDispatch } from 'react-redux';
 // import { login } from '../actions/authActions';
 // import { useNavigate } from 'react-router-dom';
-import { ipcRenderer } from 'electron';
+// import { ipcRenderer } from '@electron/remote';
+// const { ipcRenderer } = window.require('@electron/remote');
 
 const Login = () => {
   // const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const Login = () => {
     // dispatch(login());
     console.log("Login Press")
     event.preventDefault();
-    ipcRenderer.send('login', { username: 'usernameMu', password: 'passwordMu' });
+    // ipcRenderer.send('login', { username: 'usernameMu', password: 'passwordMu' });
     // fetch('https://dummyjson.com/auth/login', {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
