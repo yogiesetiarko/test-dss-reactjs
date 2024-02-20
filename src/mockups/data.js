@@ -2,11 +2,13 @@
 // the framework that you use together with Suspense.
 // Normally, the caching logic would be inside a framework.
 import axios from 'axios';
+const api = window.api;
 
 let cache = new Map();
+let cacheElectron = new Map();
 
 export function fetchTheData(url) {
-  console.log("fetchTheData url", url)
+  // console.log("fetchTheData url", url)
   // const promise = axios.get(url).then(({data}) => data);
   // return promise;
   if (!cache.has(url)) {
@@ -15,8 +17,23 @@ export function fetchTheData(url) {
   return cache.get(url);
 }
 
+export function fetchDataFromElectron(string) {
+  if(!cacheElectron.has(string)) {
+
+    let res = regroup(string);
+    cacheElectron.set(string, res);
+    // cache.set(string);
+  }
+  return cacheElectron.get(string);
+}
+
+async function regroup(string) {
+  let response = await api.invoke(string, { "aha": "halo" }).then((result) => { return result });
+  return response;
+}
+
 async function getTheData(url) {
-  console.log("getTheData url", url)
+  // console.log("getTheData url", url)
   const promise = await axios.get(url).then(({data}) => data);
   return promise;
   // if (url === '/the-beatles/albums') {

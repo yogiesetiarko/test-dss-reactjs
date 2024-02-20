@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 // import { ipcRenderer } from '@electron/remote';
 // const { ipcRenderer } = window.require('@electron/remote');
 // const { ipcRenderer } = window.require("electron");
+// const { dialog } = window.require('electron');
 
 const Login = () => {
   // const dispatch = useDispatch();
@@ -24,7 +25,6 @@ const Login = () => {
     // dispatch(login());
     console.log("Login Press")
     event.preventDefault();
-    // dialog.showErrorBox('Error Box','Fatal Error')
     // ipcRenderer.send('login', { username: 'usernameMu', password: 'passwordMu' });
     // ipcRenderer.on("login:success", (event, arg) => {
     //   console.log(arg);
@@ -42,6 +42,18 @@ const Login = () => {
     // api.invoke('login', { username: 'usernameMu', password: 'passwordMu' }).then((result) => { console.log(result) });
     let response = await api.invoke('login', { username: username, password: password }).then((result) => { return result });
     console.log("response", response)
+
+    if(response.success) {
+      // navigate('/halo');
+      navigate('/products');
+    } else {
+      // dialog.showErrorBox('Error Box',response.message)
+      // console.log(response.message)
+      await api.send('login:failed', {message: response.message})
+
+      setUsername('')
+      setPassword('')
+    }
 
     // fetch('https://dummyjson.com/auth/login', {
     //   method: 'POST',

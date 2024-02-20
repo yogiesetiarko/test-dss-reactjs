@@ -5,14 +5,25 @@ import {
 import PropTypes from 'prop-types';
 // import Albums from './Product/Albums.jsx';
 // import Panel from './Product/Panel.jsx';
-import Biography from './Product/Biography.jsx';
+// import Biography from './Product/Biography.jsx';
+import ProductList from "./Product/ProductList";
 
-const ComponentProducts = ({ id, name }) => {
+// const ComponentProducts = ({ id, name }) => {
+//   return(
+//     <Fragment>
+//       <h1>{name}</h1>
+//       <Suspense fallback={<Loading />}>
+//         <Biography artistId={id} />
+//       </Suspense>
+//     </Fragment>
+//   );
+// }
+
+const ComponentProducts = () => {
   return(
     <Fragment>
-      <h1>{name}</h1>
       <Suspense fallback={<Loading />}>
-        <Biography artistId={id} />
+        <ProductList />
       </Suspense>
     </Fragment>
   );

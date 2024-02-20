@@ -1,4 +1,8 @@
-import { fetchTheData, use } from '../../../mockups/data.js';
+import { 
+  fetchTheData, 
+  use, 
+  // fetchDataFromElectron 
+} from '../../../mockups/data.js';
 import PropTypes from 'prop-types';
 // import axios from 'axios';
 
@@ -12,6 +16,7 @@ import PropTypes from 'prop-types';
 // const resource = wrapPromise(fetchTheData(url));
 
 const Biography = ({ artistId }) => {
+  // const api = window.api;
   const url = 'https://cat-fact.herokuapp.com/facts';
   // const promise = axios.get(url).then(({data}) => data);
   // const bio = use(fetchTheData(`/${artistId}/bio`));
@@ -23,7 +28,10 @@ const Biography = ({ artistId }) => {
   // const resource = wrapPromise(fetchTheData(url));  
   // const resource = wrapPromise(promise);  
   // const bio = resource.read();
-  console.log("bio", bio)
+  // console.log("bio", bio)
+  // let responseElectron = use(fetchDataFromElectron('get:products'));
+  // console.log("fetchDataFromElectron", fetchDataFromElectron("asa", response))
+
   return (
     <section>
         <ul>

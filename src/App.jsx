@@ -95,8 +95,8 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Login />} />
         <Route element={<MyLayout />} >
-          <Route path="/" element={<Login />} />
           <Route path="/halo" element={<Hallo />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<Hallo />} />
