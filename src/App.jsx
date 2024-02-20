@@ -2,9 +2,58 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
+// import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import { 
+  // createBrowserRouter, 
+  // RouterProvider,
+  // Link,
+  Route,
+  Routes,  
+  // MemoryRouter as Router,
+  HashRouter as Router,
+  // BrowserRouter,
+  // useRoutes,
+} from 'react-router-dom'
 import Login from './views/pages/Login'
+import Hallo from './views/pages/Hallo'
+import MyLayout from './views/layouts/MyLayout'
+import Products from './views/pages/Products'
+// import itemRoutes from './routes/index.jsx'
+// const router = createBrowserRouter(itemRoutes)
+// console.log("router", router)
 
+// const router = createBrowserRouter([
+//   { path: "*", Component: Root },
+// ]);
+
+// function Root() {
+//   // 2️⃣ `BrowserRouter` component removed, but the <Routes>/<Route>
+//   // component below are unchanged
+//   return (
+//     <Routes>
+//       <Route path="/" element={<Login />} />
+//     </Routes>
+//   );
+// }
+
+// eslint-disable-next-line react/prop-types
 function App() {
+
+  // let element = useRoutes([
+  //   {
+  //     path: "/",
+  //     element: <MyLayout />,
+  //     children: [
+  //       {
+  //         path: "login",
+  //         element: <Login />,
+  //       },
+  //     ],
+  //   },
+  //   { path: "hallo", element: <Hallo /> },
+  // ]);
+
+  // console.log("router", router)
   // const [count, setCount] = useState(0)
 
   // return (
@@ -32,11 +81,31 @@ function App() {
   //   </>
   // )
 
+  // return (
+  //   <>
+  //     <RouterProvider router={router} />
+  //   </>
+  // );
+  // return (
+  //   <>
+  //     <RouterProvider router={router} />
+  //   </>
+  // );
+
   return (
-    <>
-      <Login />
-    </>
+    <Router>
+      <Routes>
+        <Route element={<MyLayout />} >
+          <Route path="/" element={<Login />} />
+          <Route path="/halo" element={<Hallo />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<Hallo />} />
+        </Route>
+      </Routes>
+    </Router>
   );
+
+  // return element;
 }
 
 export default App

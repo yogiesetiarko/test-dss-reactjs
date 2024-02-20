@@ -5,6 +5,26 @@ import Users from "../views/pages/Users";
 import Products from "../views/pages/Products";
 import News from "../views/pages/News";
 
+// import {
+//   createBrowserRouter,
+//   // Link,
+//   // Route,
+//   // RouterProvider,
+//   // Routes,
+// } from "react-router-dom";
+
+// function Root() {
+//   // 2️⃣ `BrowserRouter` component removed, but the <Routes>/<Route>
+//   // component below are unchanged
+//   return (
+//     <Routes>
+//       <Route path="/" element={<Home />} />
+//       <Route path="/blog/*" element={<BlogApp />} />
+//       <Route path="/users/*" element={<UserApp />} />
+//     </Routes>
+//   );
+// }
+
 let itemRoutes = [
   {
     path: "/",
@@ -33,5 +53,8 @@ let itemRoutes = [
     ]
   }
 ];
+// let itemRoutes = [
+//   { path: "*", Component: Root },
+// ];
 
 export default itemRoutes;
