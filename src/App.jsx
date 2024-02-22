@@ -18,6 +18,7 @@ import Login from './views/pages/Login'
 import Hallo from './views/pages/Hallo'
 import MyLayout from './views/layouts/MyLayout'
 import Products from './views/pages/Products'
+import FormProduct from './views/pages/Form/FormProduct'
 // import itemRoutes from './routes/index.jsx'
 // const router = createBrowserRouter(itemRoutes)
 // console.log("router", router)
@@ -95,11 +96,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route exact path="/" element={<Login />} />
         <Route element={<MyLayout />} >
           <Route path="/halo" element={<Hallo />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/product/:id" element={<Hallo />} />
+          <Route path="/product/add" element={<FormProduct />} />
+          <Route path="/product/edit/:id" element={<FormProduct />} />
+          <Route path="/product/detail/:id" element={<Hallo />} />
         </Route>
       </Routes>
     </Router>
