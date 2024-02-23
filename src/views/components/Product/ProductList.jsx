@@ -17,6 +17,10 @@ const ProductList = () => {
     navigate('/product/add')
   }
 
+  const onEdit = (id) => {
+    navigate(`/product/edit/${id}`)
+  }
+
   return(
     <section>
         <div>
@@ -37,35 +41,38 @@ const ProductList = () => {
 
           <div className='grid grid-rows-1 border border-white rounded'>
             <table className="">
-              <thead className="">
+              <thead className="border border-white rounded">
                 <tr>
-                  <th className="py-4">Title</th>
-                  <th className="py-4">Price</th>
-                  <th className="py-4">Stock</th>
-                  <th className="py-4">Action</th>
+                  <th className="py-4 border border-white">Title</th>
+                  <th className="py-4 border border-white">Price</th>
+                  <th className="py-4 border border-white">Stock</th>
+                  <th className="py-4 border border-white">Action</th>
                 </tr>
               </thead>
               <tbody className="">
                 {responseElectron.data.map((item, index) => (
                   <tr key={index}>
-                    <td className="">
+                    <td className="border border-white py-4">
                       <div className="flex justify-center">
                         {item.title}
                       </div>
                     </td>
-                    <td className="">
-                      <div className="flex justify-end">
+                    <td className="border border-white py-4">
+                      <div className="flex justify-end mx-2">
                         {item.price}
                       </div>
                     </td>
-                    <td className="">
-                      <div className="flex justify-end">
+                    <td className="border border-white py-4">
+                      <div className="flex justify-end mx-2">
                         {item.stock}
                       </div>
                     </td>
-                    <td className="">
+                    <td className="border border-white py-4">
                       <div className="flex justify-center">
-                        <button>
+                        <button 
+                          onClick={() => onEdit(item.title)}
+                          className="mx-2"
+                        >
                           <FiEdit2 />
                         </button>
                         <button>

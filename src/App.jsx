@@ -1,4 +1,4 @@
-// import { useState } from 'react'
+import { Suspense } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
@@ -36,6 +36,10 @@ import FormProduct from './views/pages/Form/FormProduct'
 //     </Routes>
 //   );
 // }
+
+function Loading() {
+  return <h2>🌀 AAALoading...</h2>;
+}
 
 // eslint-disable-next-line react/prop-types
 function App() {
@@ -100,8 +104,12 @@ function App() {
         <Route element={<MyLayout />} >
           <Route path="/halo" element={<Hallo />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/product/add" element={<FormProduct />} />
-          <Route path="/product/edit/:id" element={<FormProduct />} />
+          <Route path="/product/:action" element={<FormProduct />} />
+          <Route 
+            path="/product/:action/:id" 
+            element={<Suspense fallback={<Loading />}><FormProduct /></Suspense>} 
+            // lazy={() => import("./views/pages/Form/FormProduct")}
+          />
           <Route path="/product/detail/:id" element={<Hallo />} />
         </Route>
       </Routes>

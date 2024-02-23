@@ -17,18 +17,18 @@ export function fetchTheData(url) {
   return cache.get(url);
 }
 
-export function fetchDataFromElectron(string) {
+export function fetchDataFromElectron(string, payload=null) {
   if(!cacheElectron.has(string)) {
 
-    let res = regroup(string);
+    let res = regroup(string, payload);
     cacheElectron.set(string, res);
     // cache.set(string);
   }
   return cacheElectron.get(string);
 }
 
-async function regroup(string) {
-  let response = await api.invoke(string, { "aha": "halo" }).then((result) => { return result });
+async function regroup(string, payload={ "check": "halo" }) {
+  let response = await api.invoke(string, payload).then((result) => { return result });
   return response;
 }
 
