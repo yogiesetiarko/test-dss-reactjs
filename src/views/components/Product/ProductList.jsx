@@ -6,12 +6,21 @@ import {
   fetchDataFromElectron 
 } from '../../../mockups/data.js';
 import {FiEdit2, FiTrash2} from "react-icons/fi"
+const api = window.api;
 
 const ProductList = () => {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState("")
 
+  // api.receive('pushDetails', (data) => { console.log(data) });
+
   let responseElectron = use(fetchDataFromElectron('get:products'));
+  console.log("responseElectron", responseElectron)
+  // api.send('get:products', {'aha':'halo'});
+  // api.receive('get:products', {'aha':'halo'}).then((result) => { return result });
+  // let rres = api.receive('get:products', {'aha':'halo'});
+  // let rres = api.invoke('get:products', {'aha':'halo'}).then((result) => { return result; });
+  // console.log("rres", rres)
 
   const goToAddProducts = () => {
     navigate('/product/add')
@@ -70,7 +79,7 @@ const ProductList = () => {
                     <td className="border border-white py-4">
                       <div className="flex justify-center">
                         <button 
-                          onClick={() => onEdit(item.title)}
+                          onClick={() => onEdit(item._id)}
                           className="mx-2"
                         >
                           <FiEdit2 />

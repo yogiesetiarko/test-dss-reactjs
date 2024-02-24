@@ -44,7 +44,6 @@ const FormProduct = () => {
     // action 
   } = useParams();
 
-  const [obj,setObj] = React.useState({});
   const [title, setTitle] = React.useState("");
   const [detail, setDetail] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -67,72 +66,24 @@ const FormProduct = () => {
   //   // setTitle(responseElectron.data.title)
   }
 
-  // const getItemById = async () => {
-  //   // console.log('getItem')
-  //   let payload = {
-  //     id: id
-  //   }
-  //   let response = await api.invoke('get:productById', payload).then((result) => { return result });
-  //   // let responseElectron = await use(fetchDataFromElectron('get:productById', payload));
-  //   console.log("response", response)
-  //   return response.data
-  //   // setTitle(response.data.title)
-  //   // setPrice(response.data.price)
-  //   // setStock(response.data.stock)
-  //   // setDetail(response.data.detail)
-  //   // setDescription(response.data.description)
-  //   // console.log("responseElectron", responseElectron)
-  //   // console.log("payload", payload)
-  // }
-
-  // let getItemById;
-
-  const newItem = React.useMemo(() => {
-    // console.log('getItem')
-    // let payload = {
-    //   id: id
-    // }
-    // let response = api.invoke('get:productById', payload).then((result) => { return result });
-    // let responseElectron = await use(fetchDataFromElectron('get:productById', payload));
-
-    const getItemById = async () => {
-      // console.log('getItem')
-      let payload = {
-        id: id
-      }
-      let response = await api.invoke('get:productById', payload).then((result) => { return result });
-      // let responseElectron = await use(fetchDataFromElectron('get:productById', payload));
-      console.log("response", response)
-      setTitle(response.data.title)
-      setPrice(response.data.price)
-      setStock(response.data.stock)
-      setDetail(response.data.detail)
-      setDescription(response.data.description)
-      return response.data
-      // console.log("responseElectron", responseElectron)
-      // console.log("payload", payload)
-    }
-
-    let resp = getItemById()
-    console.log("resp", resp)
-    // setTitle(response.data.title)
-    // setPrice(response.data.price)
-    // setStock(response.data.stock)
-    // setDetail(response.data.detail)
-    // setDescription(response.data.description)
-    // console.log("responseElectron", responseElectron)
-    // console.log("payload", payload)
-    return resp.data;
-    // return { name: 'John', age: 30 };
-  }, [id]);
-
   useEffect(() => {
-    // console.log(responseElectron)
     if(typeof id !== 'undefined') {
-      // getItemById()
-      setObj(newItem)
+      const getData = async () => {
+        let payload = {
+          id: id
+        }
+        let response = await api.invoke('get:productById', payload).then((result) => { return result });
+        console.log("response ", response  )
+        setTitle(response.data.title)
+        setStock(response.data.stock)
+        setPrice(response.data.price)
+        setDetail(response.data.detail_product)
+        setDescription(response.data.description)
+        setImagesPrev(response.data.image)
+      }
+      getData();
     }
-  }, [id, newItem])
+  }, [id,])
 
   // const handleDrop = useCallback(async (acceptedFiles) => {
   //   // console.log("handleDrop")
@@ -145,7 +96,6 @@ const FormProduct = () => {
   // }, []);
 
   const onDrop = React.useCallback(async (acceptedFiles) => {
-    // console.log("onDrop acceptedFiles", acceptedFiles)
 
     let tesRes = await getBase64(acceptedFiles[0]);
     // let resAfter = tesRes.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
@@ -164,7 +114,7 @@ const FormProduct = () => {
     //   reader.readAsArrayBuffer(file)
     // })
 
-    //push into dokumen array
+    //push files into array
     setImages(prevFiles => [...prevFiles, ...acceptedFiles]);
   }, []);
 
@@ -243,7 +193,7 @@ const FormProduct = () => {
   //   // );
   // });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("handleSubmit")
 
@@ -256,23 +206,43 @@ const FormProduct = () => {
     formData.append("image_product", images[0]);
     // formData.append("description", description);
     // console.log(formData.values());
-    for (const value of formData.values()) {
-      console.log(value);
-    }
+    // for (const value of formData.values()) {
+    //   console.log(value);
+    // }
     
+    let formPayload = {
+      title: title,
+      price: price,
+      stock: stock,
+      detail: detail,
+      description: description,
+      image_product: imagesPrev,
+      // image_product: images[0],
+    }
 
-    // const config = {
-    //   headers: {
-    //     "content-type": "multipart/form-data",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // };
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer aaazzzsas`,
+      },
+    };
+
+    const payload = {
+      config: config,
+      // form: formData
+      form: formPayload
+    };
+    // console.log("payload", payload)
+
+    let responseSubmit = await api.invoke('post:newProduct', payload).then((result) => { return result });
+    console.log("responseSubmit", responseSubmit)
 
   }
 
   return(
     <div>
-      {typeof id !== 'undefined' ? (<>{'Edit'}</>) : (<>{'Add'}</>)} Form Product {typeof id !== 'undefined' ? (<>{id}</>) : null}
+      {typeof id !== 'undefined' ? (<>{'Edit'}</>) : (<>{'Add'}</>)} Form Product {typeof id !== 'undefined' ? (<>{title}</>) : null}
       <form>
         <div className="grid grid-cols-3 gap-4 my-4">
           <div>

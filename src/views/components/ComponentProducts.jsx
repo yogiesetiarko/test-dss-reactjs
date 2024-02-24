@@ -31,7 +31,11 @@ const ComponentProducts = () => {
 
 
 function Loading() {
-  return <h2>🌀 Loading...</h2>;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <h2>🌀 Loading...</h2>
+    </div>
+  );
 }
 
 // const ComponentProducts = ({ artist }) => {

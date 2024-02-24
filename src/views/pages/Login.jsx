@@ -92,7 +92,7 @@ const Login = () => {
   return (
     <div className='p-2'>
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-[#242424]">
         <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg border border-slate-300">
           <h3 className="text-2xl font-bold text-center text-black">Login to your account</h3>
           <form onSubmit={handleLogin}>
