@@ -1,41 +1,30 @@
-import { 
+import React, { 
+  Suspense,
   Fragment, 
-  // useState 
 } from "react"; 
-import ComponentProducts from "../components/ComponentProducts";
+
+const ProductList = React.lazy(() => {
+  return new Promise(resolve => setTimeout(resolve, 1000)).then(
+    () => import("../components/Product/ProductList")
+  );
+});
+
+function Loading() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <h2>🌀 Loading...</h2>
+    </div>
+  );
+  // return (<h2>🌀 Loading...</h2>);
+}
 
 function Products() {
-  // const [show, setShow] = useState(false);
-
-  // if(show) {
-  //   return(
-  //     <Fragment>
-  //       <ComponentProducts 
-  //         id={'the-beatles'}
-  //         name={'The Beatles'}
-  //       />
-  //     </Fragment>
-  //   );
-  // } else {
-  //   return(
-  //     <Fragment>
-  //       <div>
-  //         <button
-  //           onClick={()=>setShow(true)}
-  //         >
-  //           Get Products
-  //         </button>
-  //       </div>
-  //     </Fragment>
-  //   );
-  // }
   
   return(
     <Fragment>
-      <ComponentProducts 
-        id={'the-beatles'}
-        name={'The Beatles'}
-      />
+      <Suspense fallback={<Loading />}>
+        <ProductList />
+      </Suspense>
     </Fragment>
   );
 

@@ -1,26 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  // fetchTheData, 
-  use, 
-  fetchDataFromElectron 
-} from '../../../mockups/data.js';
+
 import {FiEdit2, FiTrash2} from "react-icons/fi"
 const api = window.api;
 
 const ProductList = () => {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState("")
+  const [items, setItems] = React.useState([]);
+  
+  React.useEffect(() => {
+    async function getData() {
+      let response = await api.invoke('get:products', { "check": "halo" }).then((result) => { return result });
+      setItems(response.data)
+    }
+    getData()
 
-  // api.receive('pushDetails', (data) => { console.log(data) });
-
-  let responseElectron = use(fetchDataFromElectron('get:products'));
-  console.log("responseElectron", responseElectron)
-  // api.send('get:products', {'aha':'halo'});
-  // api.receive('get:products', {'aha':'halo'}).then((result) => { return result });
-  // let rres = api.receive('get:products', {'aha':'halo'});
-  // let rres = api.invoke('get:products', {'aha':'halo'}).then((result) => { return result; });
-  // console.log("rres", rres)
+  }, [])  
 
   const goToAddProducts = () => {
     navigate('/product/add')
@@ -59,7 +55,7 @@ const ProductList = () => {
                 </tr>
               </thead>
               <tbody className="">
-                {responseElectron.data.map((item, index) => (
+                {items.map((item, index) => (
                   <tr key={index}>
                     <td className="border border-white py-4">
                       <div className="flex justify-center">
@@ -90,7 +86,7 @@ const ProductList = () => {
                       </div>
                     </td>
                   </tr>
-                ))}                
+                ))}
               </tbody>
             </table>
           </div>

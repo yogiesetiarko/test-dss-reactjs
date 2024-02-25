@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import {useDropzone} from 'react-dropzone';
-import { FiX } from "react-icons/fi";
-import {useParams} from "react-router-dom";
+// import { FiX } from "react-icons/fi";
+import {useParams, useNavigate} from "react-router-dom";
+import { Rating } from 'react-simple-star-rating';
+import Swal from "sweetalert2";
 // import { use, fetchDataFromElectron } from "../../../mockups/data";
 const api = window.api;
 
@@ -36,9 +38,11 @@ const img = {
   marginRight: "auto",
   borderRadius: "6px",
   paddingTop: "20px",
+  paddingBottom: "20px",
 };
 
 const FormProduct = () => {
+  const navigate = useNavigate();
   let { 
     id, 
     // action 
@@ -49,22 +53,9 @@ const FormProduct = () => {
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState(0);
   const [stock, setStock] = React.useState(0);
-  const [images, setImages] = React.useState([]);
+  const [rating, setRating] = React.useState(0);
+  // const [images, setImages] = React.useState([]);
   const [imagesPrev, setImagesPrev] = React.useState("");
-
-  // console.log("id", id);
-  // console.log("action", action);
-  if(typeof id !== 'undefined') {
-    // let payload = {
-    //   id: id
-    // }
-    // let response = await api.invoke('get:productById', payload).then((result) => { return result });
-    // console.log("response", response)
-  //   let responseElectron = use(fetchDataFromElectron('get:productById', payload));
-  //   console.log("responseElectron", responseElectron)
-  //   console.log("payload", payload)
-  //   // setTitle(responseElectron.data.title)
-  }
 
   useEffect(() => {
     if(typeof id !== 'undefined') {
@@ -80,6 +71,7 @@ const FormProduct = () => {
         setDetail(response.data.detail_product)
         setDescription(response.data.description)
         setImagesPrev(response.data.image)
+        setRating(response.data.rating)
       }
       getData();
     }
@@ -115,11 +107,11 @@ const FormProduct = () => {
     // })
 
     //push files into array
-    setImages(prevFiles => [...prevFiles, ...acceptedFiles]);
+    // setImages(prevFiles => [...prevFiles, ...acceptedFiles]);
   }, []);
 
   const {
-    acceptedFiles,
+    // acceptedFiles,
     isDragAccept,
     isDragReject,
     getRootProps,
@@ -153,12 +145,12 @@ const FormProduct = () => {
     });
   };
 
-  const handleRemoveImages = idx => {
-    console.log(idx)
-    setImages(images.filter((_, i) => i !== idx));
-    setImagesPrev("")
-    acceptedFiles.splice(idx, 1);
-  };
+  // const handleRemoveImages = idx => {
+  //   console.log(idx)
+  //   setImages(images.filter((_, i) => i !== idx));
+  //   setImagesPrev("")
+  //   acceptedFiles.splice(idx, 1);
+  // };
 
   const style = React.useMemo(
     () => ({
@@ -170,74 +162,117 @@ const FormProduct = () => {
     [isDragActive, isDragReject, isDragAccept]
   );
 
-  // const files = images.map(async (file, i) => {
-  //   // console.log("file", file)
-  //   // let tesRes = await agetBase64(file);
-  //   // let resAfter = tesRes.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-  //   return (
-  //     <div key={file.name}>
-  //       <img
-  //         // src={`data:image/jpeg;base64,${imagesPrev}`}
-  //         // src={localStorage.getItem('image_logo')}
-  //         // src={localStorage.getItem('image_logo')}
-  //         src={resAfter}
-  //         // style={img}
-  //         alt="aa"
-  //       />        
-  //     </div>
-  //   );
-  //   // return (
-  //   //   <div key={file.name}>
-  //   //     {file.name} {i}
-  //   //   </div>
-  //   // );
-  // });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("handleSubmit")
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("price", price);
-    formData.append("stock", stock);
-    formData.append("detail", detail);
-    formData.append("description", description);
-    formData.append("image_product", images[0]);
-    // formData.append("description", description);
-    // console.log(formData.values());
-    // for (const value of formData.values()) {
-    //   console.log(value);
-    // }
-    
-    let formPayload = {
-      title: title,
-      price: price,
-      stock: stock,
-      detail: detail,
-      description: description,
-      image_product: imagesPrev,
-      // image_product: images[0],
+    if(title === "") {
+      Swal.fire({
+        title: "Error.",
+        icon: "error",
+        text: `Title empty.`,
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    } else if(detail === "") {
+      Swal.fire({
+        title: "Error.",
+        icon: "error",
+        text: `Detail empty.`,
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    } else if(description === "") {
+      Swal.fire({
+        title: "Error.",
+        icon: "error",
+        text: `Descrciption empty.`,
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    } else if(price === 0) {
+      Swal.fire({
+        title: "Error.",
+        icon: "error",
+        text: `Price can't be 0.`,
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    } else if(imagesPrev === "") {
+      Swal.fire({
+        title: "Error.",
+        icon: "error",
+        text: `Please choose Image.`,
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    } else {
+      let formPayload = {
+        title: title,
+        price: Number(price),
+        stock: Number(stock),
+        detail: detail,
+        description: description,
+        image_product: imagesPrev,
+        rating: rating,
+        // image_product: images[0],
+      }
+  
+      // config for headers
+      let token = "emptyToken"
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      let payload = {
+        config: config,
+        form: formPayload,
+        id: null
+      };
+
+      let action = "post:newProduct";
+  
+      if(typeof id !== 'undefined') {
+        payload.id = id
+        action = "put:productById"
+      }
+
+      let responseSubmit = await api.invoke(action, payload).then((result) => { return result });
+      if(responseSubmit.success) {
+        Swal.fire({
+          title: "Success.",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "OK",
+          allowOutsideClick: true,
+          allowEscapeKey: true,
+          allowEnterKey: true,
+        }).then((result) => {
+          // console.log("result", result);
+          if (result.isConfirmed === true) {
+            navigate('/products');
+          }
+        });
+      }
     }
+  }
 
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        // Authorization: `Bearer ${token}`,
-        Authorization: `Bearer aaazzzsas`,
-      },
-    };
-
-    const payload = {
-      config: config,
-      // form: formData
-      form: formPayload
-    };
-    // console.log("payload", payload)
-
-    let responseSubmit = await api.invoke('post:newProduct', payload).then((result) => { return result });
-    console.log("responseSubmit", responseSubmit)
-
+  const ratingChanged = (newRating) => {
+    setRating(newRating)
   }
 
   return(
@@ -266,7 +301,7 @@ const FormProduct = () => {
             </div>
             <div>
               <input 
-                type="text" 
+                type="number"
                 value={price} 
                 onChange={(e) => setPrice(e.target.value)} 
                 placeholder="Price" 
@@ -280,12 +315,24 @@ const FormProduct = () => {
             </div>
             <div>
               <input 
-                type="Stock" 
+                type="number"
                 value={stock} 
                 onChange={(e) => setStock(e.target.value)} 
                 placeholder="Email" 
                 className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" 
               />          
+            </div>
+          </div>
+          <div>
+            <div>
+              Rating
+            </div>
+            <div>
+              <Rating 
+                onClick={ratingChanged} 
+                initialValue={rating} 
+                SVGstyle={{'display': 'inline'}}
+              />
             </div>
           </div>
           
@@ -358,18 +405,15 @@ const FormProduct = () => {
                   alt="bb"
                 />
               </>)}
-              <div className="flex justify-center my-4">
-                <button className="rounded-full bg-red-600" onClick={() => handleRemoveImages(0)}>
-                  <FiX />
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </>)}
 
         <div className="grid grid-cols-3 gap-4 my-4">
-          <button className="bg-green-600" onClick={handleSubmit}>Save</button>
+          <button className="bg-green-600" onClick={handleSubmit}>
+            {typeof id !== 'undefined' ? <>{'Update'}</> : <>{'Save'}</>}
+          </button>
         </div>
 
       </form>
