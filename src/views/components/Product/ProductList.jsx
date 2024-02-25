@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import {FiEdit2, FiTrash2} from "react-icons/fi"
 const api = window.api;
@@ -8,15 +9,17 @@ const ProductList = () => {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState("")
   const [items, setItems] = React.useState([]);
+  const [getData, setGetData] = React.useState(false);
   
   React.useEffect(() => {
     async function getData() {
       let response = await api.invoke('get:products', { "check": "halo" }).then((result) => { return result });
       setItems(response.data)
+      setGetData(false)
     }
     getData()
 
-  }, [])  
+  }, [getData])  
 
   const goToAddProducts = () => {
     navigate('/product/add')
@@ -24,6 +27,32 @@ const ProductList = () => {
 
   const onEdit = (id) => {
     navigate(`/product/edit/${id}`)
+  }
+
+  const onDelete = (data) => {
+    Swal.fire({
+      title: `Are you sure wan to delete ${data.title} ?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "OK",
+      allowOutsideClick: false,
+      allowEscapeKey: true,
+      allowEnterKey: true,
+    }).then(async (result) => {
+      
+      if (result.isConfirmed === true) {
+        let responseDel = await api.invoke("del:productById", {id: data._id}).then((result) => { return result });
+        console.log("responseDel", responseDel)
+        setGetData(true)
+      } 
+      
+      // Cancel Button
+      // else if(result.isDismissed === true) {
+
+      // }
+    });
   }
 
   return(
@@ -80,7 +109,9 @@ const ProductList = () => {
                         >
                           <FiEdit2 />
                         </button>
-                        <button>
+                        <button
+                          onClick={() => onDelete(item)}
+                        >
                           <FiTrash2 />
                         </button>
                       </div>
