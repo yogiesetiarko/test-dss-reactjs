@@ -1,5 +1,4 @@
 import { 
-  // lazy, 
   Suspense 
 } from 'react'
 import './App.css'
@@ -29,15 +28,12 @@ function App() {
           <Route path="/halo" element={<Hallo />} />
           <Route 
             path="/products" 
-            // Component={Products} 
             element={<Suspense fallback={<Loading />}><Products /></Suspense>} 
-            // element={<Products />} 
           />
           <Route path="/product/:action" element={<FormProduct />} />
           <Route 
             path="/product/:action/:id" 
             element={<Suspense fallback={<Loading />}><FormProduct /></Suspense>} 
-            // lazy={() => import("./views/pages/Form/FormProduct")}
           />
           <Route path="/product/detail/:id" element={<Hallo />} />
         </Route>

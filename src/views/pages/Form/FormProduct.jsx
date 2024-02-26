@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import {useDropzone} from 'react-dropzone';
-// import { FiX } from "react-icons/fi";
 import {useParams, useNavigate} from "react-router-dom";
 import { Rating } from 'react-simple-star-rating';
 import Swal from "sweetalert2";
-// import { use, fetchDataFromElectron } from "../../../mockups/data";
 const api = window.api;
 
 const baseStyle = {
@@ -54,7 +52,6 @@ const FormProduct = () => {
   const [price, setPrice] = React.useState(0);
   const [stock, setStock] = React.useState(0);
   const [rating, setRating] = React.useState(0);
-  // const [images, setImages] = React.useState([]);
   const [imagesPrev, setImagesPrev] = React.useState("");
 
   useEffect(() => {
@@ -64,7 +61,6 @@ const FormProduct = () => {
           id: id
         }
         let response = await api.invoke('get:productById', payload).then((result) => { return result });
-        console.log("response ", response  )
         setTitle(response.data.title)
         setStock(response.data.stock)
         setPrice(response.data.price)
@@ -77,34 +73,10 @@ const FormProduct = () => {
     }
   }, [id,])
 
-  // const handleDrop = useCallback(async (acceptedFiles) => {
-  //   // console.log("handleDrop")
-  //   setGambar(acceptedFiles);
-  //   let tesRes = await agetBase64(acceptedFiles[0]);
-  //   let resAfter = tesRes.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-  //   localStorage.setItem("image_logo_bin_64_nofront",resAfter);
-  //   setImagesPrev(tesRes);
-  //   // agetBase64
-  // }, []);
-
   const onDrop = React.useCallback(async (acceptedFiles) => {
 
     let tesRes = await getBase64(acceptedFiles[0]);
-    // let resAfter = tesRes.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
     setImagesPrev(tesRes)
-
-    // acceptedFiles.forEach((file) => {
-    //   const reader = new FileReader()
-
-    //   reader.onabort = () => console.log('file reading was aborted')
-    //   reader.onerror = () => console.log('file reading has failed')
-    //   reader.onload = () => {
-    //   // Do whatever you want with the file contents
-    //     const binaryStr = reader.result
-    //     console.log("binaryStr", binaryStr)
-    //   }
-    //   reader.readAsArrayBuffer(file)
-    // })
 
     //push files into array
     // setImages(prevFiles => [...prevFiles, ...acceptedFiles]);
@@ -127,6 +99,7 @@ const FormProduct = () => {
     return new Promise(resolve => {
       // let fileInfo;
       let baseURL = "";
+      
       // Make new FileReader
       let reader = new FileReader();
 
@@ -135,22 +108,14 @@ const FormProduct = () => {
 
       // on reader load somthing...
       reader.onload = () => {
+
         // Make a fileInfo Object
-        // console.log("Called", reader);
         baseURL = reader.result;
-        // console.log(baseURL);
+        
         resolve(baseURL);
       };
-      // console.log(fileInfo);
     });
   };
-
-  // const handleRemoveImages = idx => {
-  //   console.log(idx)
-  //   setImages(images.filter((_, i) => i !== idx));
-  //   setImagesPrev("")
-  //   acceptedFiles.splice(idx, 1);
-  // };
 
   const style = React.useMemo(
     () => ({
@@ -224,7 +189,6 @@ const FormProduct = () => {
         description: description,
         image_product: imagesPrev,
         rating: rating,
-        // image_product: images[0],
       }
   
       // config for headers
@@ -273,6 +237,10 @@ const FormProduct = () => {
 
   const ratingChanged = (newRating) => {
     setRating(newRating)
+  }
+
+  const handleBack = () => {
+    navigate('/products');
   }
 
   return(
@@ -413,6 +381,9 @@ const FormProduct = () => {
         <div className="grid grid-cols-3 gap-4 my-4">
           <button className="bg-green-600" onClick={handleSubmit}>
             {typeof id !== 'undefined' ? <>{'Update'}</> : <>{'Save'}</>}
+          </button>
+          <button className="bg-red-600" onClick={handleBack}>
+            Back
           </button>
         </div>
 

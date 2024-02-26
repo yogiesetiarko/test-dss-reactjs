@@ -1,93 +1,80 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
-// const electron = window.require('electron');
-// const remote = electron.remote
-// const {dialog} = remote
-// import { useDispatch } from 'react-redux';
-// import { login } from '../actions/authActions';
 import { useNavigate } from 'react-router-dom';
-// import { ipcRenderer } from '@electron/remote';
-// const { ipcRenderer } = window.require('@electron/remote');
-// const { ipcRenderer } = window.require("electron");
-// const { dialog } = window.require('electron');
+import Swal from 'sweetalert2'
 
 const Login = () => {
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  // const electron = window.electron;
-  // const ipcRenderer = window.ipcRenderer;
+  const electron = window.electron;
   const api = window.api;
-  const electronAPI = window.electronAPI;
 
   const handleLogin = async (event) => {
-    // dispatch(login());
-    console.log("Login Press")
     event.preventDefault();
-    // ipcRenderer.send('login', { username: 'usernameMu', password: 'passwordMu' });
-    // ipcRenderer.on("login:success", (event, arg) => {
-    //   console.log(arg);
-    // });
 
-    // api.send('login', { username: 'usernameMu', password: 'passwordMu' })
-    // // api.handle( 'login:success', ( event, data ) => {
-    // //   console.log( "data react", data )
-    // // }, event);    
-    // api.handle( 'login:success', ( event, data ) => function( event, data ) {
-    //   console.log( "data react", data )
-    // }, event);
-
-    // api.invoke('login', { username: 'usernameMu', password: 'passwordMu' }).then((result) => { methodName(result); });
-    // api.invoke('login', { username: 'usernameMu', password: 'passwordMu' }).then((result) => { console.log(result) });
     let response = await api.invoke('login', { username: username, password: password }).then((result) => { return result });
-    console.log("response", response)
+    // console.log("response", response)
 
     if (response.success) {
-      // navigate('/halo');
-      navigate('/products');
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("firstName", response.data.firstName);
+      localStorage.setItem("lastName", response.data.lastName);
+      localStorage.setItem("userName", response.data.username);
+
+      Swal.fire({
+        title: "Login Success.",
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+        allowOutsideClick: false,
+      }).then((result) => {
+        // console.log("result", result);
+        if (result.isConfirmed === true) {
+          navigate('/products');
+        }
+      });
     } else {
-      // dialog.showErrorBox('Error Box',response.message)
-      // console.log(response.message)
       await api.send('login:failed', { message: response.message })
 
       setUsername('')
       setPassword('')
     }
 
-    // fetch('https://dummyjson.com/auth/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-
-    //     username: 'kminchelle',
-    //     password: '0lelplR',
-    //     // expiresInMins: 60, // optional
-    //   })
-    // })
-    // .then(res => res.json())
-    // .then(console.log);
-
   };
-  // const goToHallo = () => {
-  //   navigate('/halo', {
-  //     state: {
-  //       userId: 7
-  //     }
-  //   });    
-  // }
-  const goToHallo = () => {
-    // navigate('/halo/9');
-    navigate('/halo');
+
+  const goToInfo = () => {
+    Swal.fire({
+      title: "<strong>INFO</strong>",
+      icon: "info",
+      html: `
+        <div>
+          <span>${electron.homeDir()}</span>
+        </div>
+        <div>
+          <span>${electron.osVersion()}</span>
+        </div>
+        <div>
+          <span>${electron.osArch()}</span>
+        </div>
+      `,
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: `
+        <i class="fa fa-thumbs-up"></i> Great!
+      `,
+      cancelButtonAriaLabel: "Thumbs down"
+    });
   }
-  const goToProducts = () => {
-    // navigate('/halo/9');
-    navigate('/products');
+
+  const reset = (event) => {
+    event.preventDefault();
+    setUsername('')
+    setPassword('')
   }
-  
-  // const handleAnother = () => {
-  //   navigate('/halo');
-  // }
 
   return (
     <div className='p-2'>
@@ -98,12 +85,12 @@ const Login = () => {
           <form onSubmit={handleLogin}>
             <div className="mt-4">
               <div>
-                <label className="block">Email</label>
+                <label className="block">Username</label>
                 <input 
                   type="text" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)} 
-                  placeholder="Email" 
+                  placeholder="Username" 
                   className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" 
                 />
               </div>
@@ -119,42 +106,35 @@ const Login = () => {
               </div>
               <div className="flex items-baseline justify-between">
                 <button type="submit" className="px-6 py-2 mt-4 text-white bg-green-600 rounded-lg hover:bg-blue-900">Login</button>
-                <button type="submit" className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Reset</button>
-                {/* <a href="#" className="text-sm text-blue-600 hover:underline">Forgot password?</a> */}
+                <button 
+                  className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900"
+                  onClick={reset}
+                >
+                  Reset
+                </button>
               </div>
               <div className="flex items-baseline justify-between my-4">
                 <button
-                  onClick={goToHallo}
-                >hallo</button>
-                <button
-                  onClick={goToProducts}
-                >Products</button>
+                  onClick={goToInfo}
+                >Info</button>
               </div>
 
             </div>
           </form>
+          <div className="grid grid-cols-1 text-[#000] text-xs">
+            <span><b>* Notes</b> :</span>
+          </div>
+          <div className="grid grid-cols-1 text-[#000] text-xs">
+            username : kminchelle
+          </div>
+          <div className="grid grid-cols-1 text-[#000] text-xs">
+            password : 0lelplR
+          </div>
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-1">
-        {electron.homeDir()}
-      </div>
-      <div className="grid grid-cols-1">
-        {electron.osVersion()}
-      </div>
-      <div className="grid grid-cols-1">
-        {electron.osArch()}
-      </div> */}
-              </div>
-              );
-
-  // return (
-  //   <div>
-  //     <h1>Login Page</h1>
-  //     <button onClick={handleLogin}>Login</button>
-  //     <button onClick={handleAnother}>Another</button>
-  //   </div>
-  // );
+    </div>
+  );
 };
 
-              export default Login;
+export default Login;

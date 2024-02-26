@@ -15,7 +15,6 @@ function Loading() {
       <h2>🌀 Loading...</h2>
     </div>
   );
-  // return (<h2>🌀 Loading...</h2>);
 }
 
 function Products() {
