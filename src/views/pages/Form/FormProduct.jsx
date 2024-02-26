@@ -99,7 +99,7 @@ const FormProduct = () => {
     return new Promise(resolve => {
       // let fileInfo;
       let baseURL = "";
-      
+
       // Make new FileReader
       let reader = new FileReader();
 
@@ -245,7 +245,16 @@ const FormProduct = () => {
 
   return(
     <div>
-      {typeof id !== 'undefined' ? (<>{'Edit'}</>) : (<>{'Add'}</>)} Form Product {typeof id !== 'undefined' ? (<>{title}</>) : null}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
+        <h1>
+          {typeof id !== 'undefined' ? (<>{'Edit'}</>) : (<>{'Add'}</>)} Form Product {typeof id !== 'undefined' ? (<>{title}</>) : null}
+        </h1>
+      </div>
       <form>
         <div className="grid grid-cols-3 gap-4 my-4">
           <div>
